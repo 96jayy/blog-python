@@ -29,6 +29,7 @@ def date_var(data):
             except (ValueError, TypeError):
                 print(f"❌ '{col}' 컬럼은 날짜 데이터가 아닙니다.")
     print(data.info())
+    return data
 
 def get_categorical_columns(df, threshold=0.05):
     """
@@ -56,24 +57,31 @@ def unique_var(data):
         data[col]=data[col].astype('category')
         print(f"✅ '{col} 컬럼은 범주형 데이터로 변환되었습니다.")
         print('\n')
+    return data
 
 def all_process(file_path):
     data=read_data(file_path)
+    nas=how_many_nas(data)
     print("=== 결측치 현황 ===")
-    print(how_many_nas(data))
+    print(nas)
     print("\n")
 
+    datainfo=data_info(data)
     print("=== 데이터 정보 ===")
-    data_info(data)
+    print(datainfo)
     print("\n")
 
+    datadescribe=data_describe(data)
     print("=== 기초 통계량 (describe) ===")
-    print(data_describe(data))
+    print(datadescribe)
     print("\n")
 
+    data_date=date_var(data)
     print("=== 날짜형 변수 변환 ===")
-    date_var(data)
+    print(data_date)
     print("\n")
 
+    data_uniq=unique_var(data)
     print("=== 범주형 변수 변환 및 고유값 확인 ===")
-    unique_var(data)
+    print(data_uniq)
+    return data_uniq
